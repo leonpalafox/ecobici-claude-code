@@ -97,11 +97,12 @@ export const metrobusStations: MetrobusStation[] = [
 
   // Line 3 (Green/Eje 1 Poniente) - Santa Cruz Atoyac to Tenayuca
   // Expansion to Santa Cruz Atoyac opened March 2021 (5 new stations, 3.6km)
-  { id: 'mb3-1', name: 'Pueblo Sta. Cruz Atoyac', line: '3', lat: 19.361800, lon: -99.155900 },
-  { id: 'mb3-2', name: 'Miguel Laurent', line: '3', lat: 19.369200, lon: -99.156100 },
-  { id: 'mb3-3', name: 'División del Norte', line: '3', lat: 19.375800, lon: -99.156000 },
-  { id: 'mb3-4', name: 'Eugenia', line: '3', lat: 19.383400, lon: -99.155800 },
-  { id: 'mb3-5', name: 'Luz Saviñón', line: '3', lat: 19.390600, lon: -99.155700 },
+  // Coordinates verified from MapCarta and OpenStreetMap
+  { id: 'mb3-1', name: 'Pueblo Sta. Cruz Atoyac', line: '3', lat: 19.363500, lon: -99.159200 },
+  { id: 'mb3-2', name: 'Miguel Laurent', line: '3', lat: 19.374900, lon: -99.160220 },
+  { id: 'mb3-3', name: 'División del Norte', line: '3', lat: 19.380300, lon: -99.158500 },
+  { id: 'mb3-4', name: 'Eugenia', line: '3', lat: 19.386130, lon: -99.157190 },
+  { id: 'mb3-5', name: 'Luz Saviñón', line: '3', lat: 19.391460, lon: -99.156370 },
   { id: 'mb3-6', name: 'Etiopía-Plaza de la Transparencia', line: '3', lat: 19.396662, lon: -99.155915 },
   { id: 'mb3-7', name: 'Obrero Mundial', line: '3', lat: 19.40152, lon: -99.155625 },
   { id: 'mb3-8', name: 'Centro Médico', line: '3', lat: 19.406974, lon: -99.155135 },
