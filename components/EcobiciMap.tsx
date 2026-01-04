@@ -255,8 +255,8 @@ function MapClickHandler({
 
       const totalScore = metroContribution + metrobusContribution + trenLigeroContribution + ecobiciContribution;
 
-      if (totalScore > 0) {
-        onScoreUpdate({
+      // Always show score panel, even for score 0
+      onScoreUpdate({
           center: [clickLat, clickLon],
           score: totalScore,
           breakdown: {
@@ -288,9 +288,6 @@ function MapClickHandler({
             ecobici: nearbyEcobici.slice(0, 5),
           },
         });
-      } else {
-        onScoreUpdate(null);
-      }
     },
   });
 
@@ -315,7 +312,7 @@ function TransportationHeatmap({
     }
 
     // Fixed bounds covering all of Mexico City
-    const gridSize = 0.01; // Approximately 1km cells
+    const gridSize = 0.005; // Approximately 500m cells for smoother visualization
     const CDMX_BOUNDS = {
       south: 19.05,
       north: 19.60,
@@ -378,12 +375,11 @@ function TransportationHeatmap({
         const centerLon = lon + gridSize / 2;
         const score = calculateScoreForPoint(centerLat, centerLon);
 
-        if (score > 0) {
-          gridCells.push({
-            bounds: [[lat, lon], [lat + gridSize, lon + gridSize]],
-            score
-          });
-        }
+        // Include all cells, even with score 0, for complete city coverage
+        gridCells.push({
+          bounds: [[lat, lon], [lat + gridSize, lon + gridSize]],
+          score
+        });
       }
     }
 
@@ -392,25 +388,30 @@ function TransportationHeatmap({
 
   if (!visible || heatmapData.length === 0) return null;
 
-  // Color scale from red (low) to green (high)
+  // Color scale from red (low) to green (high) with smooth gradient
   const getColor = (score: number): string => {
     // Normalize score to 0-1 range (max expected score around 6)
     const normalized = Math.min(score / 6, 1);
+
+    // Use transparent for zero scores to show base map
+    if (score === 0) {
+      return 'rgba(128, 128, 128, 0.05)'; // Very light gray for zero-score areas
+    }
 
     if (normalized < 0.33) {
       // Red to Yellow
       const r = 255;
       const g = Math.floor(normalized * 3 * 255);
-      return `rgba(${r}, ${g}, 0, 0.4)`;
+      return `rgba(${r}, ${g}, 0, 0.35)`;
     } else if (normalized < 0.66) {
       // Yellow to Green
       const r = Math.floor((1 - (normalized - 0.33) * 3) * 255);
       const g = 255;
-      return `rgba(${r}, ${g}, 0, 0.4)`;
+      return `rgba(${r}, ${g}, 0, 0.35)`;
     } else {
       // Green
       const intensity = Math.floor((normalized - 0.66) * 3 * 100);
-      return `rgba(0, ${150 + intensity}, 0, 0.4)`;
+      return `rgba(0, ${150 + intensity}, 0, 0.35)`;
     }
   };
 
@@ -426,6 +427,8 @@ function TransportationHeatmap({
             color: 'transparent',
             weight: 0,
           }}
+          eventHandlers={{}}
+          interactive={false}
         />
       ))}
     </>
