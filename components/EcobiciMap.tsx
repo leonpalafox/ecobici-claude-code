@@ -312,7 +312,7 @@ function TransportationHeatmap({
     }
 
     // Fixed bounds covering all of Mexico City
-    const gridSize = 0.005; // Approximately 500m cells for smoother visualization
+    const gridSize = 0.008; // Approximately 800m cells for smooth visualization with good performance
     const CDMX_BOUNDS = {
       south: 19.05,
       north: 19.60,
@@ -384,35 +384,56 @@ function TransportationHeatmap({
     }
 
     setHeatmapData(gridCells);
+    console.log(`Heatmap generated: ${gridCells.length} cells covering CDMX`);
   }, [visible, stations]);
 
   if (!visible || heatmapData.length === 0) return null;
 
-  // Color scale from red (low) to green (high) with smooth gradient
+  // Jet color scale: blue (low) -> cyan -> green -> yellow -> red (high)
   const getColor = (score: number): string => {
     // Normalize score to 0-1 range (max expected score around 6)
     const normalized = Math.min(score / 6, 1);
 
-    // Use transparent for zero scores to show base map
+    // Use very transparent dark blue for zero scores
     if (score === 0) {
-      return 'rgba(128, 128, 128, 0.05)'; // Very light gray for zero-score areas
+      return 'rgba(0, 0, 100, 0.08)'; // Very light dark blue for zero-score areas
     }
 
-    if (normalized < 0.33) {
-      // Red to Yellow
-      const r = 255;
-      const g = Math.floor(normalized * 3 * 255);
-      return `rgba(${r}, ${g}, 0, 0.35)`;
-    } else if (normalized < 0.66) {
-      // Yellow to Green
-      const r = Math.floor((1 - (normalized - 0.33) * 3) * 255);
-      const g = 255;
-      return `rgba(${r}, ${g}, 0, 0.35)`;
+    let r: number, g: number, b: number;
+
+    if (normalized < 0.2) {
+      // Dark blue to cyan (0.0 - 0.2)
+      const t = normalized / 0.2;
+      r = 0;
+      g = Math.floor(t * 255);
+      b = 255;
+    } else if (normalized < 0.4) {
+      // Cyan to green (0.2 - 0.4)
+      const t = (normalized - 0.2) / 0.2;
+      r = 0;
+      g = 255;
+      b = Math.floor((1 - t) * 255);
+    } else if (normalized < 0.6) {
+      // Green to yellow (0.4 - 0.6)
+      const t = (normalized - 0.4) / 0.2;
+      r = Math.floor(t * 255);
+      g = 255;
+      b = 0;
+    } else if (normalized < 0.8) {
+      // Yellow to orange (0.6 - 0.8)
+      const t = (normalized - 0.6) / 0.2;
+      r = 255;
+      g = Math.floor((1 - t * 0.5) * 255); // Reduce green
+      b = 0;
     } else {
-      // Green
-      const intensity = Math.floor((normalized - 0.66) * 3 * 100);
-      return `rgba(0, ${150 + intensity}, 0, 0.35)`;
+      // Orange to red (0.8 - 1.0)
+      const t = (normalized - 0.8) / 0.2;
+      r = 255;
+      g = Math.floor((1 - t) * 128); // From 128 to 0
+      b = 0;
     }
+
+    return `rgba(${r}, ${g}, ${b}, 0.45)`;
   };
 
   return (
