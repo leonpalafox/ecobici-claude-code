@@ -35,12 +35,15 @@ export default function Home() {
       {/* Header */}
       <header className="bg-white shadow-md z-10 px-6 py-4">
         <div className="flex items-center justify-between">
-          <div>
+          <div className="flex-1">
             <h1 className="text-2xl font-bold text-gray-800">
               Ecobici Mexico City
             </h1>
             <p className="text-sm text-gray-600">
               Real-time bike sharing availability
+            </p>
+            <p className="text-xs text-blue-600 mt-1">
+              💡 Click anywhere on the map to see your Transportation Score (Metro, Metrobus, Tren Ligero, Ecobici within 500m)
             </p>
           </div>
           <div className="text-right">
@@ -82,19 +85,23 @@ export default function Home() {
 
       {/* Legend */}
       <div className="bg-gray-50 border-b border-gray-200 px-6 py-2 z-10">
-        <div className="flex items-center gap-6 text-sm">
-          <span className="text-gray-600 font-medium">Legend:</span>
+        <div className="flex items-center gap-6 text-sm flex-wrap">
+          <span className="text-gray-600 font-medium">Transportation:</span>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-green-500"></div>
-            <span className="text-gray-700">High (≥40%)</span>
+            <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center text-white text-[10px] font-bold border-2 border-white">M</div>
+            <span className="text-gray-700">Metro (3x weight)</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-orange-500"></div>
-            <span className="text-gray-700">Medium (20-39%)</span>
+            <div className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-white text-[8px] font-bold border-2 border-white">MB</div>
+            <span className="text-gray-700">Metrobus (2x weight)</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-red-500"></div>
-            <span className="text-gray-700">Low (&lt;20%)</span>
+            <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-white text-[8px] font-bold border-2 border-white">TL</div>
+            <span className="text-gray-700">Tren Ligero (2.5x weight)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 bg-green-500 rounded-full border-2 border-white"></div>
+            <span className="text-gray-700">Ecobici (1x weight)</span>
           </div>
         </div>
       </div>
