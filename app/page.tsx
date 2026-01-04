@@ -33,25 +33,32 @@ export default function Home() {
   return (
     <div className="h-screen w-screen flex flex-col">
       {/* Header */}
-      <header className="bg-white shadow-md z-10 px-6 py-4">
+      <header className="bg-gradient-to-r from-green-600 to-emerald-700 shadow-lg z-10 px-6 py-5">
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <h1 className="text-2xl font-bold text-gray-800">
-              Ecobici Mexico City
+            <h1 className="text-3xl font-bold text-white mb-1">
+              🚲 Ecobici Mexico City
             </h1>
-            <p className="text-sm text-gray-600">
-              Real-time bike sharing availability
+            <p className="text-sm text-green-100">
+              Real-time bike sharing & public transportation accessibility map
             </p>
-            <p className="text-xs text-blue-600 mt-1">
-              💡 Click anywhere on the map to see your Transportation Score (Metro, Metrobus, Tren Ligero, Ecobici within 500m)
+            <p className="text-xs text-green-200 mt-2 flex items-center gap-1">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Click anywhere on the map to see your Transportation Score (Metro, Metrobus, Tren Ligero, Ecobici within 500m)
             </p>
           </div>
           <div className="text-right">
-            <div className="text-sm text-gray-600">
-              Stations: <span className="font-semibold text-gray-800">{stations.length}</span>
+            <div className="text-sm text-white font-semibold">
+              {stations.length} <span className="text-green-200 font-normal">Stations</span>
             </div>
-            <div className="text-xs text-gray-500">
-              Last updated: {formatLastUpdated(lastUpdated)}
+            <div className="text-xs text-green-200 mt-1">
+              Updated: {formatLastUpdated(lastUpdated)}
+            </div>
+            <div className="text-xs text-green-300 mt-2 flex items-center justify-end gap-1">
+              <span>Created by</span>
+              <span className="font-semibold">Leon Palafox</span>
             </div>
           </div>
         </div>
@@ -84,24 +91,28 @@ export default function Home() {
       )}
 
       {/* Legend */}
-      <div className="bg-gray-50 border-b border-gray-200 px-6 py-2 z-10">
+      <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-300 px-6 py-3 z-10 shadow-sm">
         <div className="flex items-center gap-6 text-sm flex-wrap">
-          <span className="text-gray-600 font-medium">Transportation:</span>
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center text-white text-[10px] font-bold border-2 border-white">M</div>
-            <span className="text-gray-700">Metro (3x weight)</span>
+          <span className="text-gray-700 font-semibold">🚇 Transportation Layers:</span>
+          <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full shadow-sm">
+            <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center text-white text-[10px] font-bold border-2 border-white shadow-sm">M</div>
+            <span className="text-gray-700 font-medium">Metro</span>
+            <span className="text-xs text-gray-500">(3x)</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-white text-[8px] font-bold border-2 border-white">MB</div>
-            <span className="text-gray-700">Metrobus (2x weight)</span>
+          <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full shadow-sm">
+            <div className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-white text-[8px] font-bold border-2 border-white shadow-sm">MB</div>
+            <span className="text-gray-700 font-medium">Metrobus</span>
+            <span className="text-xs text-gray-500">(2x)</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-white text-[8px] font-bold border-2 border-white">TL</div>
-            <span className="text-gray-700">Tren Ligero (2.5x weight)</span>
+          <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full shadow-sm">
+            <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-white text-[8px] font-bold border-2 border-white shadow-sm">TL</div>
+            <span className="text-gray-700 font-medium">Tren Ligero</span>
+            <span className="text-xs text-gray-500">(2.5x)</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 bg-green-500 rounded-full border-2 border-white"></div>
-            <span className="text-gray-700">Ecobici (1x weight)</span>
+          <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full shadow-sm">
+            <div className="w-5 h-5 bg-green-500 rounded-full border-2 border-white shadow-sm"></div>
+            <span className="text-gray-700 font-medium">Ecobici</span>
+            <span className="text-xs text-gray-500">(1x)</span>
           </div>
         </div>
       </div>
@@ -122,6 +133,33 @@ export default function Home() {
           <EcobiciMap stations={stations} />
         )}
       </div>
+
+      {/* Footer with Attribution */}
+      <footer className="bg-gray-800 text-white px-6 py-3 z-10 shadow-inner">
+        <div className="flex items-center justify-between text-xs">
+          <div className="flex items-center gap-4">
+            <span className="text-gray-400">Data source: Lyft GBFS API</span>
+            <span className="text-gray-600">•</span>
+            <span className="text-gray-400">Public transportation: CDMX Open Data</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-gray-400">Built with</span>
+            <a
+              href="https://claude.ai/code"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 font-semibold transition-colors flex items-center gap-1"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+              </svg>
+              Claude Code
+            </a>
+            <span className="text-gray-600">•</span>
+            <span className="text-gray-400">© 2026 Leon Palafox</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

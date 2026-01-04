@@ -620,7 +620,11 @@ export default function EcobiciMap({ stations }: EcobiciMapProps) {
       {/* Heatmap Toggle Button */}
       <button
         onClick={() => setShowHeatmap(!showHeatmap)}
-        className="absolute top-4 right-4 z-[1000] bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-lg shadow-lg border border-gray-300 transition-colors"
+        className={`absolute top-4 right-4 z-[1000] font-semibold py-2.5 px-5 rounded-lg shadow-xl border-2 transition-all duration-200 transform hover:scale-105 ${
+          showHeatmap
+            ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white border-blue-400 hover:from-blue-600 hover:to-indigo-700'
+            : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-50'
+        }`}
         title={showHeatmap ? "Hide Transportation Heatmap" : "Show Transportation Heatmap"}
       >
         <div className="flex items-center gap-2">
@@ -638,30 +642,37 @@ export default function EcobiciMap({ stations }: EcobiciMapProps) {
               d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
             />
           </svg>
-          <span className="text-sm">{showHeatmap ? 'Hide' : 'Show'} Heatmap</span>
+          <span className="text-sm font-bold">{showHeatmap ? 'Hide' : 'Show'} Heatmap</span>
         </div>
       </button>
 
       {/* Transportation Score Panel */}
       {scoreData && (
-        <div className="absolute bottom-4 right-4 bg-white rounded-lg shadow-xl p-4 max-w-md max-h-[600px] overflow-y-auto z-[1000]">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-bold text-xl">Transportation Score</h3>
+        <div className="absolute bottom-4 right-4 bg-white rounded-xl shadow-2xl p-5 max-w-md max-h-[600px] overflow-y-auto z-[1000] border border-gray-200 animate-in slide-in-from-right duration-300">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <svg className="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+              </svg>
+              <h3 className="font-bold text-xl text-gray-800">Transportation Score</h3>
+            </div>
             <button
               onClick={() => setScoreData(null)}
-              className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+              className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-colors text-2xl leading-none"
+              title="Close"
             >
               ×
             </button>
           </div>
 
           {/* Overall Score */}
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4 mb-4">
+          <div className="bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 rounded-xl p-5 mb-4 shadow-lg">
             <div className="text-center">
-              <div className="text-5xl font-bold text-blue-600 mb-1">
+              <div className="text-6xl font-black text-white mb-2 drop-shadow-lg">
                 {scoreData.score.toFixed(1)}
               </div>
-              <div className="text-sm text-gray-600">Overall Accessibility Score</div>
+              <div className="text-sm text-blue-100 font-medium">Overall Accessibility Score</div>
+              <div className="mt-2 text-xs text-blue-200">Based on nearby transit options</div>
             </div>
           </div>
 
