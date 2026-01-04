@@ -389,48 +389,48 @@ function TransportationHeatmap({
 
   if (!visible || heatmapData.length === 0) return null;
 
-  // Jet color scale: blue (low) -> cyan -> green -> yellow -> red (high)
+  // Jet color scale: red (low/worst) -> orange -> yellow -> green -> cyan -> blue (high/best)
   const getColor = (score: number): string => {
     // Normalize score to 0-1 range (max expected score around 6)
     const normalized = Math.min(score / 6, 1);
 
-    // Use very transparent dark blue for zero scores
+    // Use very transparent red for zero scores (worst)
     if (score === 0) {
-      return 'rgba(0, 0, 100, 0.08)'; // Very light dark blue for zero-score areas
+      return 'rgba(150, 0, 0, 0.1)'; // Very light red for zero-score areas
     }
 
     let r: number, g: number, b: number;
 
     if (normalized < 0.2) {
-      // Dark blue to cyan (0.0 - 0.2)
+      // Red to orange (0.0 - 0.2)
       const t = normalized / 0.2;
-      r = 0;
-      g = Math.floor(t * 255);
-      b = 255;
+      r = 255;
+      g = Math.floor(t * 128); // From 0 to 128
+      b = 0;
     } else if (normalized < 0.4) {
-      // Cyan to green (0.2 - 0.4)
+      // Orange to yellow (0.2 - 0.4)
       const t = (normalized - 0.2) / 0.2;
-      r = 0;
-      g = 255;
-      b = Math.floor((1 - t) * 255);
+      r = 255;
+      g = Math.floor(128 + t * 127); // From 128 to 255
+      b = 0;
     } else if (normalized < 0.6) {
-      // Green to yellow (0.4 - 0.6)
+      // Yellow to green (0.4 - 0.6)
       const t = (normalized - 0.4) / 0.2;
-      r = Math.floor(t * 255);
+      r = Math.floor((1 - t) * 255); // From 255 to 0
       g = 255;
       b = 0;
     } else if (normalized < 0.8) {
-      // Yellow to orange (0.6 - 0.8)
+      // Green to cyan (0.6 - 0.8)
       const t = (normalized - 0.6) / 0.2;
-      r = 255;
-      g = Math.floor((1 - t * 0.5) * 255); // Reduce green
-      b = 0;
+      r = 0;
+      g = 255;
+      b = Math.floor(t * 255); // From 0 to 255
     } else {
-      // Orange to red (0.8 - 1.0)
+      // Cyan to blue (0.8 - 1.0)
       const t = (normalized - 0.8) / 0.2;
-      r = 255;
-      g = Math.floor((1 - t) * 128); // From 128 to 0
-      b = 0;
+      r = 0;
+      g = Math.floor((1 - t) * 255); // From 255 to 0
+      b = 255;
     }
 
     return `rgba(${r}, ${g}, ${b}, 0.45)`;
